@@ -3,8 +3,8 @@ package pubsub
 import (
 	"fmt"
 
-	"github.com/MysGate/go-fundamental/util"
 	"github.com/cskr/pubsub"
+	"github.com/skytree-labs/go-fundamental/util"
 )
 
 const (

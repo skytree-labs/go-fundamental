@@ -9,7 +9,6 @@ import (
 	"math/big"
 	"regexp"
 
-	"github.com/MysGate/go-fundamental/core"
 	"github.com/bwmarrin/snowflake"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -17,6 +16,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/shopspring/decimal"
+	"github.com/skytree-labs/go-fundamental/core"
 )
 
 var IsAlphanumeric = regexp.MustCompile(`^[0-9a-zA-Z]+$`).MatchString

@@ -4,9 +4,9 @@ import (
 	"io"
 	"log"
 
-	"github.com/MysGate/go-fundamental/chain/btc/btcapi"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/wire"
+	"github.com/skytree-labs/go-fundamental/chain/btc/btcapi"
 )
 
 type TxpoolClient struct {

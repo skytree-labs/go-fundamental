@@ -4,9 +4,9 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 
-	"github.com/MysGate/go-fundamental/util"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/skytree-labs/go-fundamental/util"
 )
 
 type EthAccount struct {

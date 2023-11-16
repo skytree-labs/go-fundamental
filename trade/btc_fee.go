@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/MysGate/go-fundamental/util"
+	"github.com/skytree-labs/go-fundamental/util"
 )
 
 type feelevel int
