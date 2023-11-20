@@ -12,6 +12,7 @@ require (
 	github.com/cskr/pubsub v1.0.2
 	github.com/ethereum/go-ethereum v1.13.5
 	github.com/go-xorm/xorm v0.7.9
+	github.com/mitchellh/mapstructure v1.4.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/shopspring/decimal v1.3.1
