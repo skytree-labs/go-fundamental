@@ -14,15 +14,12 @@ func GenRsaKey(bits int) (string, string, error) {
 	}
 
 	publicKey := &privateKey.PublicKey
-	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
-	if err != nil {
-		return "", "", err
-	}
+	derPubStream := x509.MarshalPKCS1PublicKey(publicKey)
+	pubStr := hex.EncodeToString(derPubStream)
 
-	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
-	privateStr := hex.EncodeToString(derStream)
+	derPriStream := x509.MarshalPKCS1PrivateKey(privateKey)
+	privateStr := hex.EncodeToString(derPriStream)
 
-	pubStr := hex.EncodeToString(derPkix)
 	return privateStr, pubStr, nil
 }
 
@@ -55,8 +52,9 @@ func RsaDecrypt(ciphertext []byte, privateKey string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	key := priv
 
-	data, err := rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)
+	data, err := rsa.DecryptPKCS1v15(rand.Reader, key, ciphertext)
 	if err != nil {
 		return nil, err
 	}
