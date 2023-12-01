@@ -22,6 +22,15 @@ func Test_rsa_gen(t *testing.T) {
 	fmt.Println(priPem)
 	fmt.Println("public pem string:")
 	fmt.Println(pubPem)
+	fmt.Println("trim pem string:")
+	base64ed := RemovePrefixAndBase64(pubPem)
+	unbase64edbyte, err := base64.StdEncoding.DecodeString(base64ed)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	unbase64ed := string(unbase64edbyte)
+	fmt.Println("-----BEGIN RSA PUBLIC KEY-----" + unbase64ed + "-----END RSA PUBLIC KEY-----\n")
 }
 
 func Test_rsa_encrypto_decrypto(t *testing.T) {
