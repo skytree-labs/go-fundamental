@@ -5,22 +5,34 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/hex"
+	"encoding/pem"
 )
 
-func GenRsaKey(bits int) (string, string, error) {
+func GenRsaKey(bits int) (priHex string, pubHex string, priPem string, pubPem string, err error) {
 	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
 	if err != nil {
-		return "", "", err
+		return
 	}
 
 	publicKey := &privateKey.PublicKey
 	derPubStream := x509.MarshalPKCS1PublicKey(publicKey)
-	pubStr := hex.EncodeToString(derPubStream)
+	pubHex = hex.EncodeToString(derPubStream)
+	block := pem.Block{
+		Type:  "RSA PUBLIC KEY",
+		Bytes: derPubStream,
+	}
+	pubPemBytes := pem.EncodeToMemory(&block)
+	pubPem = string(pubPemBytes)
 
 	derPriStream := x509.MarshalPKCS1PrivateKey(privateKey)
-	privateStr := hex.EncodeToString(derPriStream)
-
-	return privateStr, pubStr, nil
+	priHex = hex.EncodeToString(derPriStream)
+	block = pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: derPriStream,
+	}
+	priPemBytes := pem.EncodeToMemory(&block)
+	priPem = string(priPemBytes)
+	return
 }
 
 func RsaEncrypt(data []byte, pubKey string) ([]byte, error) {
@@ -29,12 +41,11 @@ func RsaEncrypt(data []byte, pubKey string) ([]byte, error) {
 		return nil, err
 	}
 
-	pubInterface, err := x509.ParsePKIXPublicKey(pubBytes)
+	pub, err := x509.ParsePKCS1PublicKey(pubBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	pub := pubInterface.(*rsa.PublicKey)
 	ciphertext, err := rsa.EncryptPKCS1v15(rand.Reader, pub, data)
 	if err != nil {
 		return nil, err

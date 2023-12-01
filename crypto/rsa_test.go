@@ -10,7 +10,7 @@ import (
 )
 
 func Test_rsa_gen(t *testing.T) {
-	priStr, pubStr, err := GenRsaKey(1024)
+	priStr, pubStr, priPem, pubPem, err := GenRsaKey(1024)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -18,16 +18,27 @@ func Test_rsa_gen(t *testing.T) {
 	fmt.Println(priStr)
 	fmt.Println("public string:")
 	fmt.Println(pubStr)
+	fmt.Println("private pem string:")
+	fmt.Println(priPem)
+	fmt.Println("public pem string:")
+	fmt.Println(pubPem)
 }
 
 func Test_rsa_encrypto_decrypto(t *testing.T) {
-	fmt.Println("gen keys")
-	priStr, pubStr, err := GenRsaKey(1024)
+	priStr, _, _, pubPem, err := GenRsaKey(1024)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	fmt.Println("encrypto text")
+	var pubByte []byte
+	p, rest := pem.Decode([]byte(pubPem))
+	if p != nil && p.Bytes != nil {
+		pubByte = p.Bytes
+	} else {
+		pubByte = rest
+	}
+	pubStr := hex.EncodeToString(pubByte)
+
 	plainText := "Hello World"
 	encrypto, err := RsaEncrypt([]byte(plainText), pubStr)
 	if err != nil {
@@ -115,36 +126,6 @@ func Test_unbase64(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	fmt.Println(string(plainBytes))
-}
-
-func Test_unbase641(t *testing.T) {
-	priStr, pubStr, err := GenRsaKey(1024)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-	pubBytes, err := hex.DecodeString(pubStr)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	block := pem.Block{
-		Type:  "RSA PUBLIC KEY",
-		Bytes: pubBytes,
-	}
-	pub := pem.EncodeToMemory(&block)
-	fmt.Println(string(pub))
-
-	priBytes, err := hex.DecodeString(priStr)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	block = pem.Block{
-		Type:  "RSA PRIVATE KEY",
-		Bytes: priBytes,
-	}
-
-	pri := pem.EncodeToMemory(&block)
-	fmt.Println(string(pri))
 }
 
 func Test_unbase642(t *testing.T) {
