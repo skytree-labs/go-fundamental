@@ -4,8 +4,10 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/pem"
+	"strings"
 )
 
 func GenRsaKey(bits int) (priHex string, pubHex string, priPem string, pubPem string, err error) {
@@ -70,4 +72,11 @@ func RsaDecrypt(ciphertext []byte, privateKey string) ([]byte, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func RemovePrefixAndBase64(pemStr string) string {
+	str := strings.TrimPrefix(pemStr, "-----BEGIN RSA PUBLIC KEY-----")
+	newstr := strings.TrimSuffix(str, "-----END RSA PUBLIC KEY-----\n")
+	base64ed := base64.StdEncoding.EncodeToString([]byte(newstr))
+	return base64ed
 }
