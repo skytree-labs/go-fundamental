@@ -17,4 +17,7 @@ func TestRemoveSlice(t *testing.T) {
 
 	tpl := GetEthCallPostData("0x123", "234")
 	fmt.Println(tpl)
+
+	lpadstr, _ := Pad("71", 64, '0')
+	fmt.Println(lpadstr)
 }
