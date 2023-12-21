@@ -13,5 +13,8 @@ func TestRemoveSlice(t *testing.T) {
 	a = append(a, 21)
 
 	b := RemoveIndex(a, 3)
-	fmt.Print(b)
+	fmt.Println(b)
+
+	tpl := GetEthCallPostData("0x123", "234")
+	fmt.Println(tpl)
 }
