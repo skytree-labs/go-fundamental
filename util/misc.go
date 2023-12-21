@@ -3,6 +3,7 @@ package util
 import (
 	"context"
 	"crypto/ecdsa"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -162,4 +163,32 @@ func PrivateToAddress(key string) (string, error) {
 	}
 	addr := crypto.PubkeyToAddress(*publicKeyECDSA).Hex()
 	return addr, nil
+}
+
+type EthCallResult struct {
+	Jsonrpc string `json:"jsonrpc"`
+	Result  string `json:"result"`
+	ID      int    `json:"id"`
+}
+
+func GetEthCallPostData(to string, data string) string {
+	tpl := `{"method":"eth_call","params":[{"from": null,"to":"%s","data":"%s"}, "latest"],"id":1,"jsonrpc":"2.0"}`
+	return fmt.Sprintf(tpl, to, data)
+}
+
+func ReadContract(url string, postdata string) (*EthCallResult, error) {
+	headers := make(map[string]string)
+	headers["Content-Type"] = " application/json"
+	hc := GetHTTPClient()
+	result := &EthCallResult{}
+	body, err := HTTPReq("POST", url, hc, []byte(postdata), headers)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
