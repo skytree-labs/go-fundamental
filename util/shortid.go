@@ -120,13 +120,13 @@ func SetDefault(sid *Shortid) {
 }
 
 // Generate generates an Id using the default generator.
-func Generate() (string, error) {
+func GenerateShortId() (string, error) {
 	return shortid.Generate()
 }
 
 // MustGenerate acts just like Generate, but panics instead of returning errors.
-func MustGenerate() string {
-	id, err := Generate()
+func MustGenerateShortId() string {
+	id, err := GenerateShortId()
 	if err == nil {
 		return id
 	}

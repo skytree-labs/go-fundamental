@@ -7,12 +7,12 @@ import (
 )
 
 func Test_generate(t *testing.T) {
-	id, err := Generate()
+	id, err := GenerateShortId()
 	if err != nil {
 		return
 	}
 	fmt.Println(id)
-	id, err = Generate()
+	id, err = GenerateShortId()
 	if err != nil {
 		return
 	}
@@ -44,13 +44,13 @@ func Test_onSetDefault_replacesDefaultInstance(t *testing.T) {
 
 func Test_onGenerate_success(t *testing.T) {
 	time.Sleep(2 * time.Millisecond)
-	if id, err := Generate(); err != nil {
+	if id, err := GenerateShortId(); err != nil {
 		t.Error(err)
 	} else if len(id) != 9 {
 		t.Error("incorrect id length")
 	}
 	time.Sleep(2 * time.Millisecond)
-	if id, err := Generate(); err != nil {
+	if id, err := GenerateShortId(); err != nil {
 		t.Error(err)
 	} else if len(id) != 9 {
 		t.Error("incorrect id length")
@@ -59,11 +59,11 @@ func Test_onGenerate_success(t *testing.T) {
 
 func Test_oMustGenerate_success(t *testing.T) {
 	time.Sleep(2 * time.Millisecond)
-	if id := MustGenerate(); len(id) != 9 {
+	if id := MustGenerateShortId(); len(id) != 9 {
 		t.Error("incorrect id length")
 	}
 	time.Sleep(2 * time.Millisecond)
-	if id := MustGenerate(); len(id) != 9 {
+	if id := MustGenerateShortId(); len(id) != 9 {
 		t.Error("incorrect id length")
 	}
 }
